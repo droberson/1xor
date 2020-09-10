@@ -37,7 +37,7 @@
 
 int main(int argc, char *argv[]) {
   FILE *input, *fp;
-  char filename[2];
+  char filename[3];
   char *buf;
   int i, x;
   struct stat s;
@@ -60,6 +60,7 @@ int main(int argc, char *argv[]) {
     fprintf (stderr, "failed to stat input file %s: %s\n",
 	     argv[0],
 	     strerror (errno));
+    fclose (input);
     return EXIT_FAILURE;
   }
 
@@ -68,6 +69,7 @@ int main(int argc, char *argv[]) {
     fprintf (stderr, "failed to allocate %ld bytes of memory: %s\n",
 	     s.st_size,
 	     strerror (errno));
+    fclose (input);
     return EXIT_FAILURE;
   }
 
@@ -76,6 +78,8 @@ int main(int argc, char *argv[]) {
 	     s.st_size,
 	     argv[1],
 	     strerror (errno));
+    free (buf);
+    fclose (input);
     return EXIT_FAILURE;
   }
 
@@ -86,7 +90,7 @@ int main(int argc, char *argv[]) {
     fp = fopen (filename, "w");
 
     for (i = 0; i < s.st_size; i++) {
-      fputc (buf[i] ^ x, fp); 
+      fputc (buf[i] ^ x, fp);
     }
 
     fclose (fp);
