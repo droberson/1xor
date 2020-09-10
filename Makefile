@@ -1,5 +1,5 @@
 1xor:
-	gcc -o 1xor 1xor.c
+	gcc -Wall -o 1xor 1xor.c
 	strip 1xor
 
 clean:
